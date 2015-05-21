@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RpcServer", "RpcServer\RpcServer.vcxproj", "{21392AA9-FF2A-4923-B67A-9542B6D6B7D4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{21392AA9-FF2A-4923-B67A-9542B6D6B7D4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{21392AA9-FF2A-4923-B67A-9542B6D6B7D4}.Debug|Win32.Build.0 = Debug|Win32
+		{21392AA9-FF2A-4923-B67A-9542B6D6B7D4}.Release|Win32.ActiveCfg = Release|Win32
+		{21392AA9-FF2A-4923-B67A-9542B6D6B7D4}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

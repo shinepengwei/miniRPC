@@ -4,6 +4,8 @@
 #include <boost/bind.hpp>
 #include <iostream>
 #include <vector>
+#include <google/protobuf/service.h>
+#include "echo.pb.h"
 using namespace boost::asio;
 
 class TcpClient
@@ -20,13 +22,16 @@ public:
 		_sock->async_write_some(buffer(str.c_str(),strlen(str.c_str())),boost::bind(&TcpClient::write_handler,this,boost::asio::placeholders::error));
 		//_sock->async_write_some(buffer(str),boost::bind(&TcpClient::write_handler,this,boost::asio::placeholders::error));
 	}
-
+	
+	void addService(google::protobuf::Service *serv){
+		rpcServices.push_back(serv);
+	}
 private:
 	io_service &ios;
 	ip::tcp::endpoint ep;
 	typedef boost::shared_ptr<ip::tcp::socket> sock_pt;
 	sock_pt _sock;
-
+	std::vector<google::protobuf::Service*> rpcServices;
 
 	//连接成功回调函数
 	void conn_hanlder(const boost::system::error_code & ec){
@@ -48,6 +53,7 @@ private:
 		}
 
 		std::cout<<"read something:"<<&(*str)[0]<<std::endl;
+		deal_rpc_data(str);
 		boost::shared_ptr<std::vector<char>> str2(new std::vector<char>(100,0));
 		_sock->async_read_some(buffer(*str2),boost::bind(&TcpClient::read_handler,this,boost::asio::placeholders::error,str2));
 	}
@@ -56,5 +62,13 @@ private:
 	void write_handler(const boost::system::error_code &){
 		std::cout<<"send msg complete!"<<std::endl;
 	}
+
+	void deal_rpc_data(boost::shared_ptr<std::vector<char>> str){
+		echo::EchoRequest request;
+		int fid = (*str)[0] - '0';
+		request.ParseFromString(&(*str)[1]);
+		rpcServices[0]->CallMethod(rpcServices[0]->GetDescriptor()->method(fid),NULL,&request,NULL,NULL);
+	}
+	
 };
 

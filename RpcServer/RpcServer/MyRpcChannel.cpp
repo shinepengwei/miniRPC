@@ -5,7 +5,7 @@
 #include "echo.pb.h"
 namespace google {
 namespace protobuf {
-MyRpcChannel::MyRpcChannel(TcpClient * tp)
+MyRpcChannel::MyRpcChannel(TcpServer * tp)
 {
 	 m_tcpClient = tp;
 }
@@ -27,6 +27,7 @@ void MyRpcChannel::CallMethod(const MethodDescriptor* method,
 							  cstr+=request->SerializeAsString();
 							  m_tcpClient->sendMessage(cstr);
 							  std::cout<<"send:"<<cstr<<std::endl;
+							  //done->Run();
 }
 
 

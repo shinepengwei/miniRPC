@@ -17,6 +17,7 @@ public:
 	}
 	~TcpServer(void);
 	void sendMessage(std::string str){
+		std::cout<<"sending:"<<str<<std::endl;
 		_sock->async_write_some(buffer(str.c_str(),strlen(str.c_str())),boost::bind(&TcpServer::write_handler,this,boost::asio::placeholders::error));
 	}
 	//不允许使用抽象类型的参数，但是可以使用抽象类型的引用作为参数。
@@ -43,7 +44,6 @@ private:
 	void accept_hander(const boost::system::error_code & ec)
 	{
 		std::cout<<"client is connected!"<<std::endl;
-		_sock->async_write_some(buffer("hello"),boost::bind(&TcpServer::write_handler,this,boost::asio::placeholders::error));
 		boost::shared_ptr<std::vector<char>> str(new std::vector<char>(100,0));
 		_sock->async_read_some(buffer(*str),boost::bind(&TcpServer::read_handler,this,boost::asio::placeholders::error,str));
 	}

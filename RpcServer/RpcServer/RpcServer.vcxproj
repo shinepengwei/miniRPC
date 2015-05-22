@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="echo.pb.h" />
+    <ClInclude Include="MyRpcChannel.h" />
     <ClInclude Include="protobuf-lite\config.h" />
     <ClInclude Include="protobuf-lite\google\protobuf\descriptor.h" />
     <ClInclude Include="protobuf-lite\google\protobuf\descriptor.pb.h" />
@@ -139,6 +140,7 @@
     <ClInclude Include="protobuf-lite\google\protobuf\wire_format.h" />
     <ClInclude Include="protobuf-lite\google\protobuf\wire_format_lite.h" />
     <ClInclude Include="protobuf-lite\google\protobuf\wire_format_lite_inl.h" />
+    <ClInclude Include="rpcProxy.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TcpServer.h" />
@@ -146,6 +148,7 @@
   <ItemGroup>
     <ClCompile Include="echo.pb.cc" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MyRpcChannel.cpp" />
     <ClCompile Include="protobuf-lite\google\protobuf\descriptor.cc" />
     <ClCompile Include="protobuf-lite\google\protobuf\descriptor.pb.cc" />
     <ClCompile Include="protobuf-lite\google\protobuf\descriptor_database.cc" />

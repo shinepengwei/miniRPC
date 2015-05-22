@@ -1,5 +1,6 @@
 #pragma once
 #include <google\protobuf\service.h>
+#include "TcpClient.h"
 namespace google {
 namespace protobuf {
 
@@ -7,7 +8,7 @@ class MyRpcChannel :
 	public RpcChannel
 {
 public:
-	MyRpcChannel(void);
+	MyRpcChannel(TcpClient * tp);
 	~MyRpcChannel(void);
 	void CallMethod(const MethodDescriptor* method,
                           RpcController* controller,
@@ -16,6 +17,8 @@ public:
                           Closure* done);
 
 private:
+	TcpClient * m_tcpClient;
+
 
 };
 

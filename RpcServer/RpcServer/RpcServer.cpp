@@ -17,7 +17,7 @@
 #define PORT           5150  
 #define MSGSIZE        1024  
                  
-#pragma comment(lib, "ws2_32.lib")    
+#pragma comment(lib, "ws2_32.lib")
              
 using namespace google::protobuf;
 class EchoImplService : public echo::EchoService {
@@ -35,29 +35,8 @@ class EchoImplService : public echo::EchoService {
 
 int main()    
 {    /*
-    WSADATA wsaData;    
-    SOCKET sListen;    
-    SOCKET sClient;    
-    SOCKADDR_IN local;    
-    SOCKADDR_IN client;    
-    char szMessage[MSGSIZE];    
-    int ret;    
-    int iaddrSize = sizeof(SOCKADDR_IN);    
-    WSAStartup(0x0202, &wsaData);    
-                 
-    sListen = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);    
-                 
-    local.sin_family = AF_INET;    
-    local.sin_port = htons(PORT);    
-    local.sin_addr.s_addr = htonl(INADDR_ANY);    
-    bind(sListen, (struct sockaddr *) &local, sizeof(SOCKADDR_IN));    
-                 
-    listen(sListen, 1);    
-                 
-    sClient = accept(sListen, (struct sockaddr *) &client, &iaddrSize);    
-    printf("Accepted client:%s:%d\n", inet_ntoa(client.sin_addr),    
-            ntohs(client.sin_port));    
-	EchoImplService *service = new EchoImplService(); 
+
+	 EchoImplService *service = new EchoImplService(); 
     while (TRUE) {    
         ret = recv(sClient, szMessage, MSGSIZE, 0);
 		if (ret > 0){
@@ -73,13 +52,10 @@ int main()
 	*/
 	io_service ios;
 	TcpServer serv(ios);
+	EchoImplService *service = new EchoImplService(); 
+	serv.addService(service);
 	boost::thread t(boost::bind(&boost::asio::io_service::run, &ios));
 	std::cout<<"io complete"<<endl;
-	while (true)
-	{
-		char szMessage[100]; 
-		gets_s(szMessage); 
-		serv.sendMessage(szMessage);
+	while(true){
 	}
-
   }

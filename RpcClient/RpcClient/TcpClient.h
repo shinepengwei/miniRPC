@@ -15,10 +15,10 @@ public:
 		_sock->async_connect(ep,boost::bind(&TcpClient::conn_hanlder,this,boost::asio::placeholders::error));
 	}
 	~TcpClient(void);
+	//·¢ËÍÒ»¸ö×Ö·û´®
 	void sendMessage(std::string str){
 		_sock->async_write_some(buffer(str.c_str(),strlen(str.c_str())),boost::bind(&TcpClient::write_handler,this,boost::asio::placeholders::error));
 		//_sock->async_write_some(buffer(str),boost::bind(&TcpClient::write_handler,this,boost::asio::placeholders::error));
-
 	}
 
 private:

@@ -1,20 +1,13 @@
+#pragma once
 #include "echo.pb.h"
 #include "MyRpcChannel.h"
-#include "TcpServer.h"
 using namespace google::protobuf;
+//User和ServerService调用RPC时，使用proxy
 class RpcProxy{
 private:
-	RpcChannel * channel;
+	RpcChannel * m_channel;
 	echo::EchoService * service;
 public:
-	RpcProxy(TcpServer * server){
-		channel = new MyRpcChannel(server);
-		
-	}
-	void Echo(std::string string){
-		echo::EchoRequest request;
-		request.set_message(string);
-		service = new echo::EchoService::Stub(channel);
-		service->Echo(NULL, &request, NULL, NULL);
-	}
+	RpcProxy(TcpConnection * server);
+	void Echo(std::string string);
 };

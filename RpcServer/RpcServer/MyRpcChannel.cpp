@@ -1,11 +1,9 @@
 #include "stdafx.h"
 #include "MyRpcChannel.h"
 #include <iostream>
-#include <WINSOCK2.H> 
 #include "echo.pb.h"
-namespace google {
-namespace protobuf {
-MyRpcChannel::MyRpcChannel(TcpServer * tp)
+
+MyRpcChannel::MyRpcChannel(TcpConnection * tp)
 {
 	 m_tcpClient = tp;
 }
@@ -32,4 +30,3 @@ void MyRpcChannel::CallMethod(const MethodDescriptor* method,
 
 
 
-}}//namespace

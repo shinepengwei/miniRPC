@@ -1,14 +1,14 @@
 #pragma once
 #include <google\protobuf\service.h>
-#include "TcpServer.h"
-namespace google {
-namespace protobuf {
+#include "TcpConnect.h"
 
+
+using namespace google::protobuf;
 class MyRpcChannel :
 	public RpcChannel
 {
 public:
-	MyRpcChannel(TcpServer * tp);
+	MyRpcChannel(TcpConnection * tp);
 	~MyRpcChannel(void);
 	void CallMethod(const MethodDescriptor* method,
                           RpcController* controller,
@@ -17,10 +17,7 @@ public:
                           Closure* done);
 
 private:
-	TcpServer * m_tcpClient;
-
-
+	TcpConnection * m_tcpClient;
 };
 
 
-}}

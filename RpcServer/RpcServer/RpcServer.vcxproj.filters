@@ -198,21 +198,21 @@
     <ClInclude Include="protobuf-lite\google\protobuf\text_format.h">
       <Filter>proto</Filter>
     </ClInclude>
-    <ClInclude Include="TcpServer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="rpcProxy.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="MyRpcChannel.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="RPCServerService.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TcpConnect.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="RpcServer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="protobuf-lite\google\protobuf\descriptor.cc">
@@ -317,13 +317,19 @@
     <ClCompile Include="protobuf-lite\google\protobuf\text_format.cc">
       <Filter>proto</Filter>
     </ClCompile>
-    <ClCompile Include="TcpServer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="MyRpcChannel.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RPCServerService.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TcpConnect.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="rpc_proxy.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="RpcMain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

@@ -24,7 +24,6 @@ void MyRpcChannel::CallMethod(const MethodDescriptor* method,
 							  std::string cstr = std::string(c);
 							  cstr+=request->SerializeAsString();
 							  m_tcpClient->sendMessage(cstr);
-							  std::cout<<"send:"<<cstr<<std::endl;
 							  //done->Run();
 }
 

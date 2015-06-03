@@ -21,14 +21,17 @@ int main()
 		TcpServer *con = new TcpServer(ios);
 		RpcProxy *proxy = new RpcProxy(con);
 		EchoBackImplService *es = new EchoBackImplService(con,proxy);
-		boost::thread t(boost::bind(&boost::asio::io_service::run, &ios));
-		std::cout<<"io complete"<<endl;
+		//boost::thread t(boost::bind(&boost::asio::io_service::run, &ios));
+		//while(true){
+			ios.poll();
+		//}
 	}else{
 		TcpClient *con = new TcpClient(ios);
 		boost::thread t(boost::bind(&boost::asio::io_service::run, &ios));
 		RpcProxy *proxy = new RpcProxy(con);
 		EchoImplService *es = new EchoImplService(con,proxy);
 		while(true){
+			//ios.poll();
 			string in;
 			std::cin>>in;
 			proxy->Echo(in);
@@ -36,7 +39,7 @@ int main()
 
 		
 	}
+	while(true){}
 
-	while(true){
-	}
+	
   }

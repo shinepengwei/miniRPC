@@ -16,5 +16,13 @@ void EchoImplService::Echo(RpcController* controller,
 	echo::EchoResponse* response,
 	Closure* done) {
 		std::cout<<"RPC,message:"<<request->message()<<std::endl;
+	}
+
+EchoBackImplService::EchoBackImplService(TcpConnection * con,RpcProxy * pxy):RPCServerService(con,pxy){}
+void EchoBackImplService::Echo(RpcController* controller,
+	const echo::EchoRequest* request,
+	echo::EchoResponse* response,
+	Closure* done) {
+		std::cout<<"RPC,message:"<<request->message()<<std::endl;
 		m_proxy->Echo(request->message());
 	}

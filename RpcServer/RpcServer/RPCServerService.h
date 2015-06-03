@@ -24,3 +24,11 @@ public:
 		Closure* done) ;
 };
 
+class EchoBackImplService :public RPCServerService{
+public:
+	EchoBackImplService(TcpConnection * con,RpcProxy * pxy);
+	void Echo(RpcController* controller,
+		const echo::EchoRequest* request,
+		echo::EchoResponse* response,
+		Closure* done) ;
+};

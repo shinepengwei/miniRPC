@@ -48,5 +48,5 @@ public:
 	
 private:
 	ip::tcp::endpoint ep;
-	void conn_hanlder(const boost::system::error_code & ec);
+	void conn_hanlder(const boost::system::error_code & ec,sock_pt sock);
 };

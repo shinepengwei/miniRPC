@@ -20,13 +20,21 @@ int main()
 	if (inPara == 0){
 		TcpServer *con = new TcpServer(ios);
 		RpcProxy *proxy = new RpcProxy(con);
-		EchoImplService *es = new EchoImplService(con,proxy);
+		EchoBackImplService *es = new EchoBackImplService(con,proxy);
 		boost::thread t(boost::bind(&boost::asio::io_service::run, &ios));
 		std::cout<<"io complete"<<endl;
 	}else{
 		TcpClient *con = new TcpClient(ios);
+		boost::thread t(boost::bind(&boost::asio::io_service::run, &ios));
 		RpcProxy *proxy = new RpcProxy(con);
-		proxy->Echo("nima");
+		EchoImplService *es = new EchoImplService(con,proxy);
+		while(true){
+			string in;
+			std::cin>>in;
+			proxy->Echo(in);
+		}
+
+		
 	}
 
 	while(true){

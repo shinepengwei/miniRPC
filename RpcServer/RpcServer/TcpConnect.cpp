@@ -58,20 +58,22 @@ void TcpServer::accept_hander(const boost::system::error_code & ec)
 	std::cout<<"client is connected!"<<std::endl;
 	boost::shared_ptr<std::vector<char>> str(new std::vector<char>(100,0));
 	_sock->async_read_some(boost::asio::buffer(*str),boost::bind(&TcpServer::read_handler,this,boost::asio::placeholders::error,str));
-	//acceptor.async_accept(*_sock, boost::bind(&TcpServer::accept_hander,this,boost::asio::placeholders::error));
+
+	//监听新的连接，需要创建一个新的socket
+	acceptor.async_accept(*_sock, boost::bind(&TcpServer::accept_hander,this,boost::asio::placeholders::error));
 }
 
 TcpClient::TcpClient(boost::asio::io_service & io):TcpConnection(io),ep(ip::address::from_string("127.0.0.1"),6688){
 	//sock_pt sock(new ip::tcp::socket(ios));
-	_sock->async_connect(ep,boost::bind(&TcpClient::conn_hanlder,this,boost::asio::placeholders::error));
+	_sock->async_connect(ep,boost::bind(&TcpClient::conn_hanlder,this,boost::asio::placeholders::error,_sock));
 }
 //连接成功回调函数
-void TcpClient::conn_hanlder(const boost::system::error_code & ec){
+void TcpClient::conn_hanlder(const boost::system::error_code & ec,sock_pt sock){
 	if (ec){
 		std::cout<<"connect failed"<<std::endl;
 		return;
 	}
 	boost::shared_ptr<std::vector<char>> str(new std::vector<char>(100,0));
 	std::cout<<"connect success"<<std::endl;
-	_sock->async_read_some(buffer(*str),boost::bind(&TcpClient::read_handler,this,boost::asio::placeholders::error,str));
+	sock->async_read_some(buffer(*str),boost::bind(&TcpClient::read_handler,this,boost::asio::placeholders::error,str));
 }

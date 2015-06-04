@@ -8,7 +8,7 @@ class MyRpcChannel :
 	public RpcChannel
 {
 public:
-	MyRpcChannel(TcpConnection * tp);
+	MyRpcChannel(TcpEntity * tp);
 	~MyRpcChannel(void);
 	void CallMethod(const MethodDescriptor* method,
                           RpcController* controller,
@@ -17,7 +17,7 @@ public:
                           Closure* done);
 
 private:
-	TcpConnection * m_tcpClient;
+	TcpEntity * m_tcpClient;
 };
 
 

@@ -3,7 +3,7 @@
 #include <iostream>
 #include "echo.pb.h"
 
-MyRpcChannel::MyRpcChannel(TcpConnection * tp)
+MyRpcChannel::MyRpcChannel(TcpEntity * tp)
 {
 	 m_tcpClient = tp;
 }

@@ -1,6 +1,6 @@
 #include "rpcProxy.h"
 
-RpcProxy::RpcProxy(TcpConnection * server){
+RpcProxy::RpcProxy(TcpEntity * server){
 	m_channel = new MyRpcChannel(server);
 		
 }

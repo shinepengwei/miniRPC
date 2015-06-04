@@ -8,6 +8,6 @@ private:
 	RpcChannel * m_channel;
 	echo::EchoService * service;
 public:
-	RpcProxy(TcpConnection * server);
+	RpcProxy(TcpEntity * server);
 	void Echo(std::string string);
 };

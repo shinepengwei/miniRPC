@@ -2,7 +2,7 @@
 #include "RPCServerService.h"
 #include <iostream>
 
-RPCServerService::RPCServerService(TcpConnection * con, RpcProxy * pxy):m_tcpCon(con),m_proxy(pxy){
+RPCServerService::RPCServerService(TcpEntity * con, RpcProxy * pxy):m_tcpCon(con),m_proxy(pxy){
 	con->addService(this);
 }
 RPCServerService::~RPCServerService(void){}
@@ -10,7 +10,7 @@ RPCServerService::~RPCServerService(void){}
 
 
 
-EchoImplService::EchoImplService(TcpConnection * con,RpcProxy * pxy):RPCServerService(con,pxy){}
+EchoImplService::EchoImplService(TcpEntity * con,RpcProxy * pxy):RPCServerService(con,pxy){}
 void EchoImplService::Echo(RpcController* controller,
 	const echo::EchoRequest* request,
 	echo::EchoResponse* response,
@@ -18,7 +18,7 @@ void EchoImplService::Echo(RpcController* controller,
 		std::cout<<"RPC,message:"<<request->message()<<std::endl;
 	}
 
-EchoBackImplService::EchoBackImplService(TcpConnection * con,RpcProxy * pxy):RPCServerService(con,pxy){}
+EchoBackImplService::EchoBackImplService(TcpEntity * con,RpcProxy * pxy):RPCServerService(con,pxy){}
 void EchoBackImplService::Echo(RpcController* controller,
 	const echo::EchoRequest* request,
 	echo::EchoResponse* response,

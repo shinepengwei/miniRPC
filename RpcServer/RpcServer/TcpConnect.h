@@ -6,9 +6,22 @@
 #include <google/protobuf/service.h>
 
 using namespace boost::asio;
-class TcpConnection{
+typedef boost::shared_ptr<boost::asio::ip::tcp::socket> sock_pt;
+class TcpConnection
+{
 public:
-	TcpConnection(boost::asio::io_service &io);
+	TcpConnection();
+	~TcpConnection();
+
+private:
+
+};
+
+
+
+class TcpEntity{
+public:
+	TcpEntity(boost::asio::io_service &io);
 	//发送数据
 	void sendMessage(std::string str);
 	//发送数据回调
@@ -22,14 +35,14 @@ public:
 protected:
 	boost::asio::io_service &ios;
 	std::vector<google::protobuf::Service*> rpcServices;
-	typedef boost::shared_ptr<boost::asio::ip::tcp::socket> sock_pt;
+	
 	sock_pt _sock;
 
 	void deal_rpc_data(boost::shared_ptr<std::vector<char>> str);
 };
 
 
-class TcpServer:public TcpConnection
+class TcpServer:public TcpEntity
 {
 public:
 	TcpServer(boost::asio::io_service & io);
@@ -42,7 +55,7 @@ private:
 	void accept_hander(const boost::system::error_code & ec);
 };
 
-class TcpClient:public TcpConnection{
+class TcpClient:public TcpEntity{
 public:
 	TcpClient(io_service & io);
 	

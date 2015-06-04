@@ -2,7 +2,7 @@
 #include "RPCServerService.h"
 #include <iostream>
 
-RPCServerService::RPCServerService(TcpEntity * con, RpcProxy * pxy):m_tcpCon(con),m_proxy(pxy){
+RPCServerService::RPCServerService(TcpConnection * con):m_tcpCon(con){
 	con->addService(this);
 }
 RPCServerService::~RPCServerService(void){}
@@ -10,7 +10,7 @@ RPCServerService::~RPCServerService(void){}
 
 
 
-EchoImplService::EchoImplService(TcpEntity * con,RpcProxy * pxy):RPCServerService(con,pxy){}
+EchoImplService::EchoImplService(TcpConnection * con):RPCServerService(con){}
 void EchoImplService::Echo(RpcController* controller,
 	const echo::EchoRequest* request,
 	echo::EchoResponse* response,
@@ -18,11 +18,16 @@ void EchoImplService::Echo(RpcController* controller,
 		std::cout<<"RPC,message:"<<request->message()<<std::endl;
 	}
 
-EchoBackImplService::EchoBackImplService(TcpEntity * con,RpcProxy * pxy):RPCServerService(con,pxy){}
+EchoBackImplService::EchoBackImplService(TcpConnection * con):RPCServerService(con){}
 void EchoBackImplService::Echo(RpcController* controller,
 	const echo::EchoRequest* request,
 	echo::EchoResponse* response,
 	Closure* done) {
 		std::cout<<"RPC,message:"<<request->message()<<std::endl;
-		m_proxy->Echo(request->message());
+		//TODO ÄÜ·ñÌáÈ¡
+		echo::EchoRequest requestBack;
+		requestBack.set_message(request->message());
+		echo::EchoService * service = new echo::EchoService::Stub(this->m_tcpCon);
+		service->Echo(NULL, &requestBack, NULL, NULL);
+		//m_proxy->Echo(request->message());
 	}

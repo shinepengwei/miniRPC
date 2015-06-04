@@ -201,9 +201,6 @@
     <ClInclude Include="rpcProxy.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="MyRpcChannel.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="RPCServerService.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -316,9 +313,6 @@
     </ClCompile>
     <ClCompile Include="protobuf-lite\google\protobuf\text_format.cc">
       <Filter>proto</Filter>
-    </ClCompile>
-    <ClCompile Include="MyRpcChannel.cpp">
-      <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="RPCServerService.cpp">
       <Filter>源文件</Filter>

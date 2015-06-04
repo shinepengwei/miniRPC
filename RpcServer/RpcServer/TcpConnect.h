@@ -5,25 +5,18 @@
 #include <vector>
 #include <google/protobuf/service.h>
 
+
 using namespace boost::asio;
 typedef boost::shared_ptr<boost::asio::ip::tcp::socket> sock_pt;
-class TcpConnection
+class TcpConnection:
+	public google::protobuf::RpcChannel
 {
 public:
-	TcpConnection();
+	TcpConnection(boost::asio::io_service & io);
 	~TcpConnection();
-
-private:
-
-};
-
-
-
-class TcpEntity{
-public:
-	TcpEntity(boost::asio::io_service &io);
 	//发送数据
 	void sendMessage(std::string str);
+
 	//发送数据回调
 	void write_handler(const boost::system::error_code &);
 	//接收到数据
@@ -31,35 +24,49 @@ public:
 	
 	//rpc server service
 	void addService(google::protobuf::Service *serv);
+	sock_pt getSocket();
 
-protected:
-	boost::asio::io_service &ios;
-	std::vector<google::protobuf::Service*> rpcServices;
-	
+	void CallMethod(const MethodDescriptor* method,
+                          RpcController* controller,
+                          const Message* request,
+                          Message* response,
+                          Closure* done);
+
+private:
 	sock_pt _sock;
-
+	std::vector<google::protobuf::Service*> rpcServices;
+	//解析rpc string。
 	void deal_rpc_data(boost::shared_ptr<std::vector<char>> str);
 };
 
 
-class TcpServer:public TcpEntity
+
+
+class TcpServer
 {
 public:
 	TcpServer(boost::asio::io_service & io);
 
 private:
 	boost::asio::ip::tcp::acceptor acceptor;
+	std::vector<TcpConnection *> m_cons;//连接
+	TcpConnection * m_waitCon;
+	boost::asio::io_service m_ios;
+
 	void _start();
 
 	//TCP链接发生时，回调函数
 	void accept_hander(const boost::system::error_code & ec);
 };
 
-class TcpClient:public TcpEntity{
+class TcpClient
+{
 public:
 	TcpClient(io_service & io);
 	
 private:
+	TcpConnection * m_con;
 	ip::tcp::endpoint ep;
+	//boost::asio::io_service m_ios;
 	void conn_hanlder(const boost::system::error_code & ec,sock_pt sock);
 };

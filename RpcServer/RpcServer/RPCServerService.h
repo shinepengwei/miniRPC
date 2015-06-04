@@ -7,17 +7,17 @@ using namespace google::protobuf;
 class RPCServerService: public echo::EchoService
 {
 public:
-	RPCServerService(TcpEntity * con, RpcProxy * pxy);
+	RPCServerService(TcpConnection * con);
 	~RPCServerService(void);
 protected:
-	TcpEntity * m_tcpCon;
+	TcpConnection * m_tcpCon;
 	RpcProxy * m_proxy;
 };
 
 
 class EchoImplService :public RPCServerService{
 public:
-	EchoImplService(TcpEntity * con,RpcProxy * pxy);
+	EchoImplService(TcpConnection * con);
 	void Echo(RpcController* controller,
 		const echo::EchoRequest* request,
 		echo::EchoResponse* response,
@@ -26,7 +26,7 @@ public:
 
 class EchoBackImplService :public RPCServerService{
 public:
-	EchoBackImplService(TcpEntity * con,RpcProxy * pxy);
+	EchoBackImplService(TcpConnection * con);
 	void Echo(RpcController* controller,
 		const echo::EchoRequest* request,
 		echo::EchoResponse* response,

@@ -83,7 +83,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="echo.pb.h" />
-    <ClInclude Include="MyRpcChannel.h" />
     <ClInclude Include="protobuf-lite\config.h" />
     <ClInclude Include="protobuf-lite\google\protobuf\descriptor.h" />
     <ClInclude Include="protobuf-lite\google\protobuf\descriptor.pb.h" />
@@ -148,7 +147,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="echo.pb.cc" />
-    <ClCompile Include="MyRpcChannel.cpp" />
     <ClCompile Include="protobuf-lite\google\protobuf\descriptor.cc" />
     <ClCompile Include="protobuf-lite\google\protobuf\descriptor.pb.cc" />
     <ClCompile Include="protobuf-lite\google\protobuf\descriptor_database.cc" />

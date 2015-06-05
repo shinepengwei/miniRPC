@@ -21,8 +21,10 @@ int main()
 		ios.run();
 	}else{
 		TcpClient *client = new TcpClient(ios);
+		boost::thread t(boost::bind(&boost::asio::io_service::run, &ios));
 		while(true){
-			ios.poll();
+			//这种写法，cin>>in会阻塞进程，导致接收到了数据，但是不回调接收数据函数。
+			//ios.poll();
 			string in;
 			std::cin>>in;
 			echo::EchoRequest request;

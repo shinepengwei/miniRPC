@@ -14,12 +14,12 @@ TcpConnection::~TcpConnection()
 }
 
 void TcpConnection::sendMessage(std::string str){
-	std::cout<<"sending:"<<str<<std::endl;
+	std::cout<<"发送:"<<str<<std::endl;
 	_sock->async_write_some(boost::asio::buffer(str.c_str(),strlen(str.c_str())),boost::bind(&TcpConnection::write_handler,this,boost::asio::placeholders::error));
 }
 
 void TcpConnection::write_handler(const boost::system::error_code &){
-	std::cout<<"send msg complete!"<<std::endl;
+	std::cout<<"发送成功!"<<std::endl;
 }
 
 void TcpConnection::read_handler(const boost::system::error_code& ec,boost::shared_ptr<std::vector<char>> str){
@@ -27,7 +27,7 @@ void TcpConnection::read_handler(const boost::system::error_code& ec,boost::shar
 		std::cout<<"read something err"<<std::endl;
 		return;
 	}
-	std::cout<<"read something:"<<&(*str)[0]<<std::endl;
+	std::cout<<"接收:"<<&(*str)[0]<<std::endl;
 	deal_rpc_data(str);
 	boost::shared_ptr<std::vector<char>> str2(new std::vector<char>(100,0));
 	_sock->async_read_some(boost::asio::buffer(*str2),boost::bind(&TcpConnection::read_handler,this,boost::asio::placeholders::error,str2));

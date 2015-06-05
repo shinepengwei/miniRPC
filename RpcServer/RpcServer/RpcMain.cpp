@@ -18,25 +18,17 @@ int main()
 	std::cin>>inPara;
 	if (inPara == 0){
 		TcpServer *server = new TcpServer(ios);
-		//boost::thread t(boost::bind(&boost::asio::io_service::run, &ios));
-		//while(true){
-		//	ios.poll();
-		//}
 		ios.run();
 	}else{
 		TcpClient *client = new TcpClient(ios);
-		boost::thread t(boost::bind(&boost::asio::io_service::run, &ios));
-		RpcProxy *proxy = new RpcProxy(client);
-		EchoImplService *es = new EchoImplService(client);
 		while(true){
-			//ios.poll();
+			ios.poll();
 			string in;
 			std::cin>>in;
 			echo::EchoRequest request;
 			request.set_message(in);
-			echo::EchoService * service = new echo::EchoService::Stub(m_channel);
+			echo::EchoService * service = new echo::EchoService::Stub(client->getConnection());
 			service->Echo(NULL, &request, NULL, NULL);
-
 			}
 	}
   }

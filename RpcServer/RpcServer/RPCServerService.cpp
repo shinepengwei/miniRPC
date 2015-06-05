@@ -15,7 +15,7 @@ void EchoImplService::Echo(RpcController* controller,
 	const echo::EchoRequest* request,
 	echo::EchoResponse* response,
 	Closure* done) {
-		std::cout<<"RPC,message:"<<request->message()<<std::endl;
+		std::cout<<"                                RPC,message:"<<request->message()<<std::endl;
 	}
 
 EchoBackImplService::EchoBackImplService(TcpConnection * con):RPCServerService(con){}
@@ -23,11 +23,11 @@ void EchoBackImplService::Echo(RpcController* controller,
 	const echo::EchoRequest* request,
 	echo::EchoResponse* response,
 	Closure* done) {
-		std::cout<<"RPC,message:"<<request->message()<<std::endl;
+		std::cout<<"                                RPC,message:"<<request->message()<<std::endl;
 		//TODO ÄÜ·ñÌáÈ¡
 		echo::EchoRequest requestBack;
 		requestBack.set_message(request->message());
-		echo::EchoService * service = new echo::EchoService::Stub(this->m_tcpCon);
-		service->Echo(NULL, &requestBack, NULL, NULL);
+		echo::EchoService::Stub service(this->m_tcpCon);
+		service.Echo(NULL, &requestBack, NULL, NULL);
 		//m_proxy->Echo(request->message());
 	}

@@ -7,7 +7,7 @@
 
 
 using namespace boost::asio;
-typedef boost::shared_ptr<boost::asio::ip::tcp::socket> sock_pt;
+typedef boost::asio::ip::tcp::socket* sock_pt;
 class TcpConnection:
 	public google::protobuf::RpcChannel
 {
@@ -26,11 +26,12 @@ public:
 	void addService(google::protobuf::Service *serv);
 	sock_pt getSocket();
 
-	void CallMethod(const MethodDescriptor* method,
-                          RpcController* controller,
-                          const Message* request,
-                          Message* response,
-                          Closure* done);
+
+void CallMethod(const google::protobuf::MethodDescriptor* method,
+                          google::protobuf::RpcController* controller,
+                          const google::protobuf::Message* request,
+                          google::protobuf::Message* response,
+                          google::protobuf::Closure* done);
 
 private:
 	sock_pt _sock;
@@ -51,7 +52,7 @@ private:
 	boost::asio::ip::tcp::acceptor acceptor;
 	std::vector<TcpConnection *> m_cons;//Á¬½Ó
 	TcpConnection * m_waitCon;
-	boost::asio::io_service m_ios;
+	boost::asio::io_service * m_ios;
 
 	void _start();
 
@@ -63,10 +64,11 @@ class TcpClient
 {
 public:
 	TcpClient(io_service & io);
-	
+	TcpConnection * getConnection();
 private:
 	TcpConnection * m_con;
 	ip::tcp::endpoint ep;
 	//boost::asio::io_service m_ios;
-	void conn_hanlder(const boost::system::error_code & ec,sock_pt sock);
+	void conn_hanlder(const boost::system::error_code & ec,TcpConnection * con);
+	
 };

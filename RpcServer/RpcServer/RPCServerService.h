@@ -1,7 +1,6 @@
 #pragma once
 #include "echo.pb.h"
 #include "TcpConnect.h"
-#include "rpcProxy.h"
 using namespace google::protobuf;
 
 class RPCServerService: public echo::EchoService
@@ -11,10 +10,9 @@ public:
 	~RPCServerService(void);
 protected:
 	TcpConnection * m_tcpCon;
-	RpcProxy * m_proxy;
 };
 
-
+//用于服务端
 class EchoImplService :public RPCServerService{
 public:
 	EchoImplService(TcpConnection * con);

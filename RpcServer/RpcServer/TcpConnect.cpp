@@ -51,11 +51,11 @@ sock_pt TcpConnection::getSocket(){
 }
 
 
-void TcpConnection::CallMethod(const MethodDescriptor* method,
-                          RpcController* controller,
-                          const Message* request,
-                          Message* response,
-						  Closure* done){
+void TcpConnection::CallMethod(const google::protobuf::MethodDescriptor* method,
+                          google::protobuf::RpcController* controller,
+                          const google::protobuf::Message* request,
+                          google::protobuf::Message* response,
+                          google::protobuf::Closure* done){
 							  char c[2];
 							  c[0]= '0'+method->index();//这里func id有一定的数量限制。
 							  c[1] = 0;
@@ -66,17 +66,16 @@ void TcpConnection::CallMethod(const MethodDescriptor* method,
 }
 
 
-TcpServer::TcpServer(boost::asio::io_service & io):m_ios(io),acceptor(io,boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(),6688)){
-	_start();
+TcpServer::TcpServer(boost::asio::io_service & io):m_ios(&io),acceptor(io,boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(),6688)){
 	m_waitCon = NULL;
+	_start();
 }
 
 void TcpServer::_start(){
-	TcpConnection * t_con = new TcpConnection(m_ios);
-	t_con->addService(new EchoBackImplService(t_con));//con有service的句柄。
-	m_waitCon = t_con;
+	m_waitCon = new TcpConnection(*m_ios);
+	m_waitCon->addService(new EchoBackImplService(m_waitCon));//con有service的句柄。
 	//目前只能接受一次连接
-	acceptor.async_accept(*t_con->getSocket(), boost::bind(&TcpServer::accept_hander,this,boost::asio::placeholders::error));//TODO bind不懂
+	acceptor.async_accept(*m_waitCon->getSocket(), boost::bind(&TcpServer::accept_hander,this,boost::asio::placeholders::error));//TODO bind不懂
 }
 
 //TCP链接发生时，回调函数
@@ -84,23 +83,32 @@ void TcpServer::accept_hander(const boost::system::error_code & ec)
 {
 	std::cout<<"client is connected!"<<std::endl;
 	boost::shared_ptr<std::vector<char>> str(new std::vector<char>(100,0));
-	m_waitCon->getSocket()->async_read_some(boost::asio::buffer(*str),boost::bind(&TcpConnection::read_handler,m_waitCon->getSocket(),boost::asio::placeholders::error,str));
+	m_waitCon->getSocket()->async_read_some(boost::asio::buffer(*str),boost::bind(&TcpConnection::read_handler,m_waitCon,boost::asio::placeholders::error,str));
 	_start();
 	//TODO 监听新的连接，需要创建一个新的socket
 	//acceptor.async_accept(*_sock, boost::bind(&TcpServer::accept_hander,this,boost::asio::placeholders::error));
 }
 
+
+
+
+
 TcpClient::TcpClient(boost::asio::io_service & io):m_con(new TcpConnection(io)),ep(ip::address::from_string("127.0.0.1"),6688){
 	//sock_pt sock(new ip::tcp::socket(ios));
-	m_con->getSocket()->async_connect(ep,boost::bind(&TcpClient::conn_hanlder,this,boost::asio::placeholders::error,m_con->getSocket()));
+	m_con->addService(new EchoImplService(m_con));
+	m_con->getSocket()->async_connect(ep,boost::bind(&TcpClient::conn_hanlder,this,boost::asio::placeholders::error,m_con));
 }
 //连接成功回调函数
-void TcpClient::conn_hanlder(const boost::system::error_code & ec,sock_pt sock){
+void TcpClient::conn_hanlder(const boost::system::error_code & ec,TcpConnection * con){
 	if (ec){
 		std::cout<<"connect failed"<<std::endl;
 		return;
 	}
 	boost::shared_ptr<std::vector<char>> str(new std::vector<char>(100,0));
 	std::cout<<"connect success"<<std::endl;
-	sock->async_read_some(buffer(*str),boost::bind(&TcpConnection::read_handler,sock,boost::asio::placeholders::error,str));
+	con->getSocket()->async_read_some(buffer(*str),boost::bind(&TcpConnection::read_handler,con,boost::asio::placeholders::error,str));
+}
+
+TcpConnection * TcpClient::getConnection(){
+	return m_con;
 }

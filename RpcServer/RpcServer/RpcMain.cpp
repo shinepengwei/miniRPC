@@ -18,7 +18,14 @@ int main()
 	std::cin>>inPara;
 	if (inPara == 0){
 		TcpServer *server = new TcpServer(ios);
-		ios.run();
+		boost::thread t(boost::bind(&boost::asio::io_service::run, &ios));
+		//ios.run();
+		while (true)
+		{
+			string in;
+			std::cin>>in;
+			server->echo(in);
+		}
 	}else{
 		TcpClient *client = new TcpClient(ios);
 		boost::thread t(boost::bind(&boost::asio::io_service::run, &ios));

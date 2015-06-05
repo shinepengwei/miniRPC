@@ -23,6 +23,8 @@ public:
 };
 
 class EchoBackImplService :public RPCServerService{
+private:
+	echo::EchoService::Stub *m_stubService;
 public:
 	EchoBackImplService(TcpConnection * con);
 	void Echo(RpcController* controller,

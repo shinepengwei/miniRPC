@@ -47,7 +47,8 @@ class TcpServer
 {
 public:
 	TcpServer(boost::asio::io_service & io);
-
+	void sendMessageToAllClient(std::string str);
+	void echo(std::string str);
 private:
 	boost::asio::ip::tcp::acceptor acceptor;
 	std::vector<TcpConnection *> m_cons;//Á¬½Ó

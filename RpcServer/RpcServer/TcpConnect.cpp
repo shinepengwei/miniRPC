@@ -84,12 +84,21 @@ void TcpServer::accept_hander(const boost::system::error_code & ec)
 	std::cout<<"client is connected!"<<std::endl;
 	boost::shared_ptr<std::vector<char>> str(new std::vector<char>(100,0));
 	m_waitCon->getSocket()->async_read_some(boost::asio::buffer(*str),boost::bind(&TcpConnection::read_handler,m_waitCon,boost::asio::placeholders::error,str));
+	m_cons.push_back(m_waitCon);
 	_start();
 	//TODO 监听新的连接，需要创建一个新的socket
 	//acceptor.async_accept(*_sock, boost::bind(&TcpServer::accept_hander,this,boost::asio::placeholders::error));
 }
 
-
+void TcpServer::echo(std::string str){
+	for (std::vector<TcpConnection*>::iterator it = m_cons.begin();it != m_cons.end();it++)
+	{
+		echo::EchoRequest request;
+		request.set_message(str);
+		echo::EchoService::Stub * service = new echo::EchoService::Stub(*it);
+		service->Echo(NULL, &request, NULL, NULL);
+	}
+}
 
 
 
